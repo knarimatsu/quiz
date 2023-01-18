@@ -1,28 +1,68 @@
 package com.example.quiz.service;
 
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.quiz.entity.Quiz;
+import com.example.quiz.repository.QuizRepository;
 
-/** Quizサービスのインターフェース */
-public interface QuizService {
-    /** 全権取得 */
-    Iterable<Quiz> selectAll();
+@Service
+@Transactional
+public class QuizService implements IQuizService{
+    
+    @Autowired
+    QuizRepository repository;
+    @Override
+    public Iterable<Quiz> selectAll() {
+        return repository.findAll();
+    }
 
-    /** クイズ情報を idをキーに1件取得します */
-    Optional<Quiz> selectOneById(Integer id);
+    @Override
+    /** 選択したidの値を表示 */
+    public Optional<Quiz> selectOneById(Integer id) {
+        return repository.findById(id);
+    }
 
-    /** クイズ情報をランダムで1件取得します */
-    Optional<Quiz> selectOneRandomQuiz();
+    @Override
+    /** ランダムに表示 */
+    public Optional<Quiz> selectOneRandomQuiz() {
+        Integer randId = repository.getRandomId();
+        if (randId == null) {
+            return Optional.empty();
+        }
+        return repository.findById(randId);
+    }
 
-    /** クイズの正解、不正解を判定します */
-    Boolean checkQuiz(Integer id, Boolean myAnswer);
+    @Override
+    /** 正誤判定 */
+    public Boolean checkQuiz(Integer id, Boolean myAnswer) {
+        Boolean check = false;
+        Optional<Quiz> optQuiz = repository.findById(id);
+        if (optQuiz.isPresent()) {
+            Quiz quiz = optQuiz.get();
+            if (quiz.getAnswer().equals(myAnswer)) {
+                check = true;
+            }
+        }
+        return check;
+    }
 
-    /** クイズを登録します */
-    void insertQuiz(Quiz quiz);
+    @Override
+    public void insertQuiz(Quiz quiz) {
+        repository.save(quiz);
+    }
 
-    /** クイズを更新します */
-    void updateQuiz(Quiz quiz);
+    @Override
+    public void updateQuiz(Quiz quiz) {
+        repository.save(quiz);
+    }
 
-    /** クイズを削除します */
-    void deleteQuiz(Integer id);
+    @Override
+    public void deleteQuiz(Integer id) {
+        repository.deleteById(id);
+    }
+
 }

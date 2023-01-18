@@ -5,14 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.lang.model.element.QualifiedNameable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.quiz.entity.Quiz;
-import com.example.quiz.repository.QuizRepository;
 import com.example.quiz.service.QuizService;
 
 @SpringBootApplication

@@ -17,15 +17,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.quiz.entity.Quiz;
 import com.example.quiz.form.QuizForm;
-import com.example.quiz.service.QuizService;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.example.quiz.service.IQuizService;
 
 @Controller
 @RequestMapping("/quiz")
 public class QuizController {
     /** DI対象 */
     @Autowired
-    QuizService service;
+    IQuizService service;
 
     /** form-backing bean の初期化 */
     @ModelAttribute
